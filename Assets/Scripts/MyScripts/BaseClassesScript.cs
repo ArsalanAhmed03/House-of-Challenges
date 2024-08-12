@@ -93,6 +93,11 @@ public class IndexBoolPair
     public int Index { get; set; }
     public bool miniGameWinState { get; set; }
 
+
+    public IndexBoolPair()
+    {
+
+    }
     public IndexBoolPair(int index, bool miniGameWinState)
     {
         Index = index;

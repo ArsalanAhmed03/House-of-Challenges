@@ -71,7 +71,7 @@ public class TilePuzzle : MonoBehaviour
 
     private void IntializeGame()
     {
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         addTiles();
         PlaceTiles();

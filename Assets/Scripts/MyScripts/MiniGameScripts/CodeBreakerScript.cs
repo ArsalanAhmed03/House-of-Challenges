@@ -83,7 +83,7 @@ public class LogicScript : MonoBehaviour
         if (options <= 0) return;
         
         do {
-            options = Random.Range(0, options - 1);
+            options = Random.Range(0, options);
         } while (Picked[options]);
 
         selectedOption = PlayerCanvas.transform.GetChild(options);

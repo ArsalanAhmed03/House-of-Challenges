@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Loading;
-using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class PuzzleTileLocationsScript : MonoBehaviour

@@ -15,8 +15,8 @@ public class MazeRunnerLogicScript : MonoBehaviour
 
     private void InitializeLevel()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Player.transform.position = StartPoint.transform.position;
         Player.GetComponent<SpriteRenderer>().sprite = PlayerSprite;
     }

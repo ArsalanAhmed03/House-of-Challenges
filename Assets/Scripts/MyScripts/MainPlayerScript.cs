@@ -37,12 +37,19 @@ public class MainPlayerScript : NetworkBehaviour
     private Camera cameraComponent;
     private AudioListener audioListener;
 
-
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        //CmdAddPlayer();
         InitializePlayer();
     }
+
+    //[Command]
+    //public void CmdAddPlayer()
+    //{
+    //    GameManager.Instance.AddPlayer();
+    //}
+
 
     void InitializePlayer()
     {
@@ -87,7 +94,6 @@ public class MainPlayerScript : NetworkBehaviour
     {
         ResumePlayer();
         playerPoints += (win) ? 1 : 0;
-        Debug.Log(playerPoints);
     }
 
     void Start()
@@ -101,7 +107,7 @@ public class MainPlayerScript : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer || GameManager.Instance.isMiniGameActive) return;
+        if (!isLocalPlayer || FindObjectOfType<GF_GameController>().isMiniGameActive) return;
 
         Move();
         Rotate();
@@ -153,6 +159,7 @@ public class MainPlayerScript : NetworkBehaviour
             if (Physics.Raycast(firePointStart.position, direction, out hit, maxRaycastDistance))
             {
                 string hitObjectName = hit.transform.name;
+                Debug.Log(hitObjectName);
                 if (hitObjectName == "BasementDoor2" || hitObjectName == "BasementDoor1" || hitObjectName == "Door015")
                 {
                     MiniGameCall("#");

@@ -27,7 +27,7 @@ public class BalanceBeamLogicScript : MonoBehaviour
         {
             FindObjectOfType<GF_GameController>().ReturnFromMiniGame(false);
         }
-        else if (Player.transform.position.z >= 63)
+        else if (Player.transform.position.z >= 44)
         {
             FindObjectOfType<GF_GameController>().ReturnFromMiniGame(true);
         }

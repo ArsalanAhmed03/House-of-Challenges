@@ -2090,7 +2090,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6095789793871182602}
-  m_Material: {fileID: 13400000, guid: 2debad4ac21a6644faf4fc93bd5b5869, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2194,7 +2194,6 @@ MonoBehaviour:
   jumpForce: 4
   mouseSensitivity: 5
   maxLookAngle: 55
-  playerRigidBody: {fileID: 2056996503647153947}
   MainCamera: {fileID: 7298352874296577512}
   PlayerAnimator: {fileID: 5866666021909216657}
   firePointStart: {fileID: 3526795904909894368}
@@ -2518,7 +2517,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
