@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1621612960187122975}
   - component: {fileID: 8719748831810104543}
+  - component: {fileID: 1851734800614668939}
   m_Layer: 0
   m_Name: GF_GameController
   m_TagString: GameController
@@ -44,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be59e92c46c66df40b840eed11addc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   PreviousScene: 1
   Players: []
   Game_Elements:
@@ -67,7 +71,7 @@ MonoBehaviour:
     LevelCompleteSFX: {fileID: 8300000, guid: 0332c36eda7cd4f41b2eb9a51b7a1382, type: 3}
     LevelFailedSFX: {fileID: 8300000, guid: 85e13e1cb73cf8940b93d8dd58fbe399, type: 3}
     CountDown: {fileID: 0}
-  PlayableLevels: 5
+  MiniGameTriggers: {fileID: 0}
   Levels:
   - LevelObject: {fileID: 0}
     PrimaryPlayer:
@@ -180,10 +184,26 @@ MonoBehaviour:
     Reason: Time Over !
   GameWinDelay: 2
   GameLooseDelay: 2
-  totalAvalibleLevels: 0
   TimerPaused: 0
   StartLevel: 1
   StartPlayer: 1
   ObjectivesLeft: 0
   LevelTime: 0
   isMiniGameActive: 0
+--- !u!114 &1851734800614668939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340289592665998486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 3863113089
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0

@@ -216,5 +216,10 @@ namespace Mirror
             // clear the hashset because we destroyed them all
             owned.Clear();
         }
+
+        public void RegisterHandler<T>(Action<NetworkConnection, T> onClientReadyHandler)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

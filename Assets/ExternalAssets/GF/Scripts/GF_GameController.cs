@@ -3,113 +3,120 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using Mirror;
+using System.Collections.Generic;
 
-public class GF_GameController : MonoBehaviour {
+public class GF_GameController : MonoBehaviour
+{
 
-	[Header ("Scene Selection")]
-	public Scenes PreviousScene;
-	//public Scenes NextScene;
+    [Header("Scene Selection")]
+    public Scenes PreviousScene;
+    //public Scenes NextScene;
 
-	[Header ("Main Player", order = 1)]
-	public Player_Attributes[] Players; 
+    [Header("Main Player", order = 1)]
+    public Player_Attributes[] Players;
 
-	[Header ("Game Elements")]
-	public Game_Dialogues Game_Elements;
+    [Header("Game Elements")]
+    public Game_Dialogues Game_Elements;
 
     [Header("Play Area")]
-	public GameObject PlayArea;
+    public GameObject PlayArea;
 
-    [Header ("SFX Objects")]
-	public SFX_Objects SFX_Elements;
+    [Header("SFX Objects")]
+    public SFX_Objects SFX_Elements;
 
-	[Header ("Level Information")]
-	public int PlayableLevels = 6;
-	public Level_Data[] Levels;
-	[Header ("Gameover States")]
-	public bool ReasonBased;
-	[Tooltip ("Gameover information is optional. This will not appear if un-checked.")]
-	public GameOver[] States;
+    [Header("Level Information")]
+    public GameObject MiniGameTriggers;
+    public int PlayableLevels = 6;
+    public Level_Data[] Levels;
+    [Header("Gameover States")]
+    public bool ReasonBased;
+    [Tooltip("Gameover information is optional. This will not appear if un-checked.")]
+    public GameOver[] States;
 
-	[Header ("Level End Delay")]
-	public float GameWinDelay;
-	public float GameLooseDelay;
+    [Header("Level End Delay")]
+    public float GameWinDelay;
+    public float GameLooseDelay;
 
 
     //Local Variables
     GameObject AudioSource_Parent;
-	GameObject FX_AudioSource;
-	//Timer
-	int minutes;
-	int seconds;
-	string time;
-	private int currentLevel;
-	private int currentPlayer;
-	private int FinishCount = 0;
-	private bool isTimerEnabled;
-	private int Rewardamount = 0;
+    GameObject FX_AudioSource;
+    //Timer
+    int minutes;
+    int seconds;
+    string time;
+    private int currentLevel;
+    private int currentPlayer;
+    private int FinishCount = 0;
+    private bool isTimerEnabled;
+    private int Rewardamount = 0;
     public int totalAvalibleLevels;
     [HideInInspector]
-	public bool TimerPaused = false;
+    public bool TimerPaused = false;
     private Coroutine exitTimerCoroutine;
 
     #region debug
 
-    [Header ("Debug Values")]
-	[Range (1, 8)]
-	public int StartLevel = 1;
-	[Range (1, 2)]
-	public int StartPlayer = 1;
-	public int ObjectivesLeft = 0;
-	public float LevelTime = 0.0f;
+    [Header("Debug Values")]
+    [Range(1, 8)]
+    public int StartLevel = 1;
+    [Range(1, 2)]
+    public int StartPlayer = 1;
+    public int ObjectivesLeft = 0;
+    public float LevelTime = 0.0f;
 
     #endregion
 
-    void InitializeAudio (GameObject obj, string name){
-		AudioSource_Parent = GameObject.Find ("SFXController");
-		obj = new GameObject (name);
-		obj.transform.position = AudioSource_Parent.transform.position;
-		obj.transform.rotation = AudioSource_Parent.transform.rotation;
-		obj.transform.parent = AudioSource_Parent.transform;
-		obj.AddComponent<AudioSource> ();
-		obj.GetComponent<AudioSource> ().priority = 128;
-	}
-
-	void Start () {
-
-		//GameManager Variables Reset
-		Time.timeScale = 1;
-		AudioListener.pause = false;
-
-		if (!GameManager.Instance.Initialized) {
-			InitializeGame ();
-		}
-
-		//InitializeLevel ();
-
-		//Initialize Audio Sources
-		InitializeAudio (FX_AudioSource, "FX_AudioSource");
-		FX_AudioSource = GameObject.Find ("FX_AudioSource");
-		totalAvalibleLevels = PlayableLevels;
+    void InitializeAudio(GameObject obj, string name)
+    {
+        AudioSource_Parent = GameObject.Find("SFXController");
+        obj = new GameObject(name);
+        obj.transform.position = AudioSource_Parent.transform.position;
+        obj.transform.rotation = AudioSource_Parent.transform.rotation;
+        obj.transform.parent = AudioSource_Parent.transform;
+        obj.AddComponent<AudioSource>();
+        obj.GetComponent<AudioSource>().priority = 128;
     }
 
-    
+    void Start()
+    {
+
+        //GameManager Variables Reset
+        Time.timeScale = 1;
+        AudioListener.pause = false;
+
+        if (!GameManager.Instance.Initialized)
+        {
+            InitializeGame();
+        }
+
+        //InitializeLevel ();
+
+        //Initialize Audio Sources
+        InitializeAudio(FX_AudioSource, "FX_AudioSource");
+        FX_AudioSource = GameObject.Find("FX_AudioSource");
+        totalAvalibleLevels = PlayableLevels;
+    }
+
+
 
     private void Update()
     {
-		if (Input.GetKey(KeyCode.Escape) && !TimerPaused)
-		{
+        if (Input.GetKey(KeyCode.Escape) && !TimerPaused)
+        {
             PauseGame();
-		}
+        }
     }
 
     private void AddMiniGames()
     {
-        GameManager.Instance.AddMiniGames(PlayableLevels);
+        GameManager.Instance.AddMiniGames(PlayableLevels, MiniGameTriggers);
     }
 
-    void InitializeGame () {
-		GameManager.Instance.Initialized = true;
-		AddMiniGames();
+    void InitializeGame()
+    {
+        GameManager.Instance.Initialized = true;
+        AddMiniGames();
     }
 
     private void ActivatePlayArea()
@@ -119,35 +126,48 @@ public class GF_GameController : MonoBehaviour {
 
     private void DeactivatePlayArea()
     {
-        PlayArea.SetActive (false);
+        PlayArea.SetActive(false);
     }
 
 
-	private int PickRandomMiniGame()
-	{
-		int index;
-		do
-		{
-			index = Random.Range(0, PlayableLevels);
-		} while (GameManager.Instance.isValidLevel(index));
-		return index + 1;
-	}
+    private int PickRandomMiniGame(string TriggerName)
+    {
+        int index = GameManager.Instance.isValidLevel(TriggerName);
+        if (index >= 0)
+        {
+            return index + 1;
+        }
+        else
+        {
+            return -1;
+        }
 
-	public bool isMiniGameActive = false;
+    }
 
-    public bool MoveToMiniGame(string gameName)
+    public bool isMiniGameActive = false;
+
+    public bool MoveToMiniGame(string TriggerName)
     {
         if (isMiniGameActive) return false;
         if (totalAvalibleLevels == 0) return false;
-        isMiniGameActive = true;
-        currentLevel = PickRandomMiniGame();
-		InitializeLevel();
-		DeactivatePlayArea();
-		return true;
+        Debug.Log(11);
+        currentLevel = PickRandomMiniGame(TriggerName);
+        Debug.Log(currentLevel);
+        if (currentLevel >= 0)
+        {
+            isMiniGameActive = true;
+            InitializeLevel();
+            DeactivatePlayArea();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-	private IEnumerator DisableSplashScreens()
-	{
+    private IEnumerator DisableSplashScreens()
+    {
         yield return new WaitForSeconds(GameWinDelay);
         Game_Elements.LevelComplete.SetActive(false);
         Game_Elements.LevelFailed.SetActive(false);
@@ -163,21 +183,21 @@ public class GF_GameController : MonoBehaviour {
     public void ReturnFromMiniGame(bool Won)
     {
         totalAvalibleLevels -= Won ? 1 : 0;
-		ActivatePlayArea();
+        ActivatePlayArea();
         Game_Elements.LevelComplete.SetActive(Won);
         Game_Elements.LevelFailed.SetActive(!Won);
         exitTimerCoroutine = StartCoroutine(DisableSplashScreens());
         UninitializeLevel();
-		if (TimerPaused)
-		{
-			ResumeGame();
-		}
+        if (TimerPaused)
+        {
+            ResumeGame();
+        }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         //ActivatePlayer();
         FindObjectOfType<MainPlayerScript>().MiniGameReturn(Won);
-		GameManager.Instance.setminiGameWinState(currentLevel - 1, Won);
-		
+        GameManager.Instance.setminiGameWinState(currentLevel - 1, Won);
+
     }
 
     private CursorLockMode CursorLockState = CursorLockMode.Confined;
@@ -188,17 +208,17 @@ public class GF_GameController : MonoBehaviour {
         Cursor.lockState = CursorLockState;
         Cursor.visible = Cursorvisible;
     }
-	public void PauseGame()
-	{
-		TimerPaused = true;
-		CursorLockState = Cursor.lockState;
-		Cursorvisible = Cursor.visible;
-		Game_Elements.PauseMenu.SetActive(true);
-		Time.timeScale = 0.0f;
-		AudioListener.pause = true;
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
-	}
+    public void PauseGame()
+    {
+        TimerPaused = true;
+        CursorLockState = Cursor.lockState;
+        Cursorvisible = Cursor.visible;
+        Game_Elements.PauseMenu.SetActive(true);
+        Time.timeScale = 0.0f;
+        AudioListener.pause = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 
     public void ResumeGame()
     {
@@ -210,31 +230,35 @@ public class GF_GameController : MonoBehaviour {
     }
 
 
-    void InitializeLevel () {
+    void InitializeLevel()
+    {
 
-		Game_Elements.LevelComplete.SetActive (false);
-		Game_Elements.FinalComplete.SetActive (false);
-		Game_Elements.LevelFailed.SetActive (false);
-		Game_Elements.GameExit.SetActive (false);
-		Game_Elements.LoadingScreen.SetActive (false);
-		Game_Elements.PauseMenu.SetActive (false);
-		Game_Elements.HelpScreen.SetActive (false);
+        Game_Elements.LevelComplete.SetActive(false);
+        Game_Elements.FinalComplete.SetActive(false);
+        Game_Elements.LevelFailed.SetActive(false);
+        Game_Elements.GameExit.SetActive(false);
+        Game_Elements.LoadingScreen.SetActive(false);
+        Game_Elements.PauseMenu.SetActive(false);
+        Game_Elements.HelpScreen.SetActive(false);
         Levels[currentLevel - 1].LevelObject.SetActive(true);
 
-        if (Levels [currentLevel - 1].GiveReward) {
-			if (Levels [currentLevel - 1].RewardLevels.Length == 0)
-				Debug.LogError ("No Rewards have been defined in the inspector !");
-		}
+        if (Levels[currentLevel - 1].GiveReward)
+        {
+            if (Levels[currentLevel - 1].RewardLevels.Length == 0)
+                Debug.LogError("No Rewards have been defined in the inspector !");
+        }
 
     }
 
-	public void ShowInstruction () {
-		Game_Elements.InstructionText.text = Levels [currentLevel - 1].Objectives [FinishCount].Instruction;
-		FinishCount++;
+    public void ShowInstruction()
+    {
+        Game_Elements.InstructionText.text = Levels[currentLevel - 1].Objectives[FinishCount].Instruction;
+        FinishCount++;
     }
 
-	public void MainMenu () {
-		Game_Elements.LoadingScreen.SetActive (true);
-		SceneManager.LoadScene (PreviousScene.ToString ());
+    public void MainMenu()
+    {
+        Game_Elements.LoadingScreen.SetActive(true);
+        SceneManager.LoadScene(PreviousScene.ToString());
     }
 }

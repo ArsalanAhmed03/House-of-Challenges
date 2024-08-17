@@ -2,32 +2,37 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class GF_SplashScreen : MonoBehaviour {
+public class GF_SplashScreen : MonoBehaviour
+{
 
-	[Header("Scene Selection")]
-	public Scenes NextScene;
+    [Header("Scene Selection")]
+    public Scenes NextScene;
 
-	[Header("Scene Settings")]
-	public float WaitTime;
+    [Header("Scene Settings")]
+    public float WaitTime;
 
-	void Start () {
+    void Start()
+    {
 
-		Time.timeScale = 1;
-		AudioListener.pause = false;
+        Time.timeScale = 1;
+        AudioListener.pause = false;
 
-		if (!GameManager.Instance.Initialized) {
-			InitializeGame();
-		}
+        if (!GameManager.Instance.Initialized)
+        {
+            InitializeGame();
+        }
 
-		StartCoroutine (StartGame ());
-	}
+        StartCoroutine(StartGame());
+    }
 
-	void InitializeGame() {
-		GameManager.Instance.Initialized = true;
-	}
+    void InitializeGame()
+    {
+        GameManager.Instance.Initialized = true;
+    }
 
-	IEnumerator StartGame(){
-		yield return new WaitForSeconds (WaitTime);
-		SceneManager.LoadScene(NextScene.ToString());
-	}
+    IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(WaitTime);
+        SceneManager.LoadScene(NextScene.ToString());
+    }
 }

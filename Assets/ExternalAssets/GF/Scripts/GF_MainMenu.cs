@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class GF_MainMenu : MonoBehaviour{
+public class GF_MainMenu : MonoBehaviour
+{
 
     [Header("Scene Selection")]
     public Scenes NextScene;
@@ -12,32 +13,38 @@ public class GF_MainMenu : MonoBehaviour{
     public GameObject ExitDialogue;
 
 
-    void Start(){
+    void Start()
+    {
 
         Time.timeScale = 1;
         AudioListener.pause = false;
 
-        if (!GameManager.Instance.Initialized) {
+        if (!GameManager.Instance.Initialized)
+        {
             InitializeGame();
         }
 
         InitializeUI();
     }
 
-    void InitializeGame() {
+    void InitializeGame()
+    {
         GameManager.Instance.Initialized = true;
     }
 
-    void InitializeUI() {
+    void InitializeUI()
+    {
         ExitDialogue.SetActive(false);
     }
 
-    public void PlayBtn(){
+    public void PlayBtn()
+    {
         SceneManager.LoadScene(NextScene.ToString());
-        
+
     }
 
-    public void Exit(){
+    public void Exit()
+    {
         Application.Quit();
     }
 }

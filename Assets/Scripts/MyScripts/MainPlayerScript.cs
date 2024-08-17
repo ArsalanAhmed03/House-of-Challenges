@@ -40,16 +40,8 @@ public class MainPlayerScript : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        //CmdAddPlayer();
         InitializePlayer();
     }
-
-    //[Command]
-    //public void CmdAddPlayer()
-    //{
-    //    GameManager.Instance.AddPlayer();
-    //}
-
 
     void InitializePlayer()
     {
@@ -81,11 +73,12 @@ public class MainPlayerScript : NetworkBehaviour
         playerRigidBody.useGravity = true;
     }
 
-    void MiniGameCall(string gameName)
+    void MiniGameCall(string TriggerName)
     {
         PausePlayer();
-        if (!FindObjectOfType<GF_GameController>().MoveToMiniGame(gameName))
+        if (!FindObjectOfType<GF_GameController>().MoveToMiniGame(TriggerName))
         {
+            Debug.Log("Game Already Used");
             ResumePlayer();
         }
     }
@@ -160,9 +153,9 @@ public class MainPlayerScript : NetworkBehaviour
             {
                 string hitObjectName = hit.transform.name;
                 Debug.Log(hitObjectName);
-                if (hitObjectName == "BasementDoor2" || hitObjectName == "BasementDoor1" || hitObjectName == "Door015")
+                if (hitObjectName.Length == 2 && hitObjectName[0] == 'T')
                 {
-                    MiniGameCall("#");
+                    MiniGameCall(hitObjectName);
                 }
             }
         }

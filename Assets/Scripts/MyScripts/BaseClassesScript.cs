@@ -92,16 +92,19 @@ public class IndexBoolPair
 {
     public int Index { get; set; }
     public bool miniGameWinState { get; set; }
+    public string TriggerName { get; set; }
+
 
 
     public IndexBoolPair()
     {
 
     }
-    public IndexBoolPair(int index, bool miniGameWinState)
+    public IndexBoolPair(int index, bool miniGameWinState, string TriggerName)
     {
         Index = index;
         this.miniGameWinState = miniGameWinState;
+        this.TriggerName = TriggerName;
     }
 
     public void setMiniGameWinState(bool Win)
